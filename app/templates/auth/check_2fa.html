@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ _('Two-Factor Authentication') }}</h1>
+    <p>{{ _('Please confirm this log-in attempt on the Authy app on your phone.') }}</p>
+    <p><img src="{{ url_for('static', filename='loading.gif') }}"></p>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        function check_push() {
+            $.ajax("{{ url_for('auth.check_2fa_poll') }}").done(function(data) {
+                if (data == 'pending') {
+                    setTimeout(check_push, 5000);
+                }
+                else if (data == 'approved') {
+                    window.location = "{{ next }}";
+                }
+                else {
+                    window.location = "{{ url_for('auth.login', next=next) }}";
+                }
+            });
+        }
+
+        setTimeout(check_push, 5000);
+    </script>
+{% endblock %}

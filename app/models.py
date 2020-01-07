@@ -98,6 +98,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
+    authy_id = db.Column(db.Integer, index=True, unique=True)
     followed = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
@@ -233,6 +234,9 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         if user is None or user.token_expiration < datetime.utcnow():
             return None
         return user
+
+    def two_factor_enabled(self):
+        return self.authy_id is not None
 
 
 @login.user_loader

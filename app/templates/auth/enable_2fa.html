@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Enable Two-Factor Authentication') }}</h1>
+    <p>To enable Two-Factor Authentication, you need to have the <a href="https://authy.com/" target="_blank">Authy</a> app installed on your smartphone. <a href="https://authy.com/download/" target="_blank">Download</a> it now!</p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+{% endblock %}

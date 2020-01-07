@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ _('Enable Two-Factor Authentication') }}</h1>
+    <p>{{ _('Please scan the QR code below with the Authy app to continue.') }}</p>
+    <h2>{{ _('iOS Instructions') }}</h2>
+    <ul>
+        <li>{{ _('Open the Authy iOS app.') }}</li>
+        <li>{{ _('Tap the Red + sign at the bottom of the screen for Add Account.') }}</li>
+        <li>{{ _('Tap Scan QR Code') }}</li>
+    </ul>
+    <h2>{{ _('Android Instructions') }}</h2>
+    <ul>
+        <li>{{ _('Open the Authy Android app.') }}</li>
+        <li>{{ _('Tap the … (menu) icon in the upper right corner, and then select Add Account.') }}</li>
+        <li>{{ _('Tap Scan QR Code') }}</li>
+    </ul>
+    <img src="{{ url_for('auth.enable_2fa_qrcode') }}">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        function check_registration() {
+            $.ajax("{{ url_for('auth.enable_2fa_poll') }}").done(function(data) {
+                if (data == 'pending') {
+                    setTimeout(check_registration, 5000);
+                }
+                else {
+                    window.location = "{{ url_for('main.user', username=current_user.username) }}";
+                }
+            });
+        }
+
+        setTimeout(check_registration, 5000);
+    </script>
+{% endblock %}

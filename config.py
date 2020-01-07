@@ -22,3 +22,6 @@ class Config(object):
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = 25
+    AUTHY_APP_NAME = os.environ.get('AUTHY_APP_NAME')
+    AUTHY_APP_ID = os.environ.get('AUTHY_APP_ID')
+    AUTHY_PRODUCTION_API_KEY = os.environ.get('AUTHY_PRODUCTION_API_KEY')
